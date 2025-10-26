@@ -3,25 +3,59 @@ package com.example.patient_management_system.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 public class Patient {
+
     @Id
-    @GeneratedValue(strategy =GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @NotNull
     private String name;
 
-    public UUID getId() {
-        return id;
+    private String address;
+
+    @NotNull
+    @Email
+    @Column(unique = true)
+    private String email;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "registration_date", nullable = false)
+    private LocalDate registrationDate;
+
+    // Automatically set registration date before persisting
+    @PrePersist
+    public void prePersist() {
+        if (registrationDate == null) {
+            registrationDate = LocalDate.now();
+        }
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAddress() {
@@ -40,39 +74,11 @@ public class Patient {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public UUID getId() {
+        return id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setId(UUID id) {
+        this.id = id;
     }
-
-    public LocalDate getDateOBirth() {
-        return dateOBirth;
-    }
-
-    public void setDateOBirth(LocalDate dateOBirth) {
-        this.dateOBirth = dateOBirth;
-    }
-
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-    }
-
-    @NotNull
-    @Email
-    @Column(unique=true)
-    private String email;
-
-    private String address;
-
-    private LocalDate dateOBirth;
-
-    private LocalDate registrationDate;
-
 }
