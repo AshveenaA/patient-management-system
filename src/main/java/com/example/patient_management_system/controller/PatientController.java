@@ -23,7 +23,6 @@ public class PatientController {
     public ResponseEntity<List<PatientResponseDTO>> getPatients(){
         List<PatientResponseDTO> patients= patientService.getPatients();
         return ResponseEntity.ok().body(patients);
-
     }
 
     @PostMapping
@@ -31,6 +30,5 @@ public class PatientController {
         PatientResponseDTO patientResponseDTO =patientService.createPatients(patientRequestDTO );
         return ResponseEntity.ok().body(patientResponseDTO);
     }
-
 
 }
